@@ -1,0 +1,29 @@
+This is the updated HTML code for the "search-results.html" template, which includes a block to display search results if they are not empty:
+
+html
+Copy code
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Search Results</title>
+</head>
+<body>
+<h1>Search Results</h1>
+<ul>
+    <li th:each="article : ${articleList}">
+        <h2 th:text="${article.getTitle()}"></h2>
+        <p th:text="${article.getAbstract()}"></p>
+        <img th:src="${article.getImageUrl()}" />
+    </li>
+</ul>
+<th:block th:if="${searchResults != null and not #lists.isEmpty(searchResults)}">
+    <h2>Search Results:</h2>
+    <ul>
+        <li th:each="result : ${searchResults}">
+            <h3 th:text="${result.getTitle()}"></h3>
+            <p th:text="${result.getAbstract()}"></p>
+            <img th:src="${result.getImageUrl()}" />
+        </li>
+    </ul>
+</th:block>
+</body>
+</html>
