@@ -9,7 +9,19 @@
 <div class="container">
     <div class="bg-light p-4 rounded m-2">
         <h1 class="display-4">Today's Most Popular Stories</h1>
-        <th:block th:unless="${articleList.isEmpty()}">
+        <form th:action="@{/search}" method="post">
+            <label for="searchText">Search:</label>
+            <input type="text" id="searchText" name="searchText" required>
+            <input type="hidden" name="userInput" value="userInput">
+            <button type="submit">Search</button>
+        </form>
+
+        </form>
+        <div th:if="${articleList == null or articleList.isEmpty()}">
+            <p>No articles found.</p>
+        </div>
+
+        <div th:if="${articleList != null and not articleList.isEmpty()}">
             <div class="row justify-content-center">
                 <div class="col-auto" th:each="article: ${articleList}">
                     <div class="card" style="width: 18rem; height: 34rem;">
@@ -22,7 +34,8 @@
                     </div>
                 </div>
             </div>
-        </th:block>
+        </div>
+
     </div>
 </div>
 <div th:replace="fragments :: footer"></div>

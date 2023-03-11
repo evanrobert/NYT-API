@@ -7,14 +7,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 
 import java.util.List;
 
 
 @Controller
+@RestController
 public class ArticleController {
     @Autowired
     ArticleService articleService;
@@ -33,9 +33,10 @@ public class ArticleController {
         return "search";
     }
 
+
     @PostMapping("/search")
-    public String postSearching(@ModelAttribute("userInput") Model model, String userInput) {
-        List<Doc> searchResults = articleService.getSearchResults(userInput);
+    public String postSearching(Model model, @RequestParam String searchText) {
+        List<Doc> searchResults = articleService.getSearchResults(searchText);
         model.addAttribute("searchResults", searchResults);
         return "search-results";
     }
