@@ -1,9 +1,7 @@
+
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
-<head>
-    <title>New York Times API Demo</title>
-    <div th:replace="fragments :: header"></div>
-</head>
+<head th:replace="fragments/header :: head"></head>
 <body>
 <div th:replace="fragments :: navigation"></div>
 <div class="container">
@@ -16,7 +14,6 @@
             <button type="submit">Search</button>
         </form>
 
-        </form>
         <div th:if="${articleList == null or articleList.isEmpty()}">
             <p>No articles found.</p>
         </div>

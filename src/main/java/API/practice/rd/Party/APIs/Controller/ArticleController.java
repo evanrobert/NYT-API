@@ -1,6 +1,7 @@
 package API.practice.rd.Party.APIs.Controller;
 
 
+import API.practice.rd.Party.APIs.Domain.Article;
 import API.practice.rd.Party.APIs.Domain.Doc;
 import API.practice.rd.Party.APIs.Service.ArticleService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,6 +21,14 @@ public class ArticleController {
     ArticleService articleService;
 
     @GetMapping("/test")
+    public String homes(Model model) {
+        List<Article> articleList = articleService.getMostPopular();
+        System.out.println(articleList.size()); // print size of articleList
+        model.addAttribute("articleList", articleList);
+        return "index";
+    }
+
+    @GetMapping("/tests")
     public String home(Model model) {
         model.addAttribute("articleList", articleService.getMostPopular());
 
@@ -45,12 +54,5 @@ public class ArticleController {
 
 
 
-//    Create two "/search" endpoints in your ArticleController class.
-//        A GET endpoint to display the search page.
-//        A POST endpoint, that receives search text input and
-//        calls the service method for results. It will then add those results to the model
-//        and return a template to display them.
-//Create the two templates to accompany the endpoints created above.
-//        "search.html"
-//        "search-results.html"
+
 
