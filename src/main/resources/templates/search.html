@@ -1,14 +1,35 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
-<head>
-    <title>Search</title>
-</head>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments :: header"></head>
 <body>
-<h1>Search</h1>
-<form th:action="@{/search}" method="post">
-    <label for="userInput">Search:</label>
-    <input type="text" id="userInput" name="userInput" required>
-    <button type="submit">Search</button>
-</form>
+<div th:replace="fragments :: navigation"></div>
+<div class="container">
+    <div class="bg-light p-4 rounded m-2">
+        <h1 class="display-4">Today's Most Popular Stories</h1>
+
+        <div th:if="${articleList == null or articleList.isEmpty()}">
+            <p>No articles found.</p>
+        </div>
+
+        <div th:if="${articleList != null and not articleList.isEmpty()}">
+            <div class="row justify-content-center">
+                <div class="col-auto" th:each="article: ${articleList}">
+                    <div class="card" style="width: 18rem; height: 34rem;">
+                        <img th:unless="${article.imageUrl == null}" th:src="${article.imageUrl}" class="card-img-top" src="">
+                        <div class="card-body">
+                            <h5 class="card-title" th:text="${article.title}">title</h5>
+                            <p class="card-text" th:text="${article.summary}">summary</p>
+                            <a th:href="${article.url}" class="btn btn-primary">Read More..</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+<div th:replace="fragments :: footer"></div>
 </body>
 </html>
+
+

@@ -1,39 +1,32 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
-    <title>New York Times API Demo</title>
-    <div th:replace="fragments :: header"></div>
+    <meta charset="UTF-8">
+    <title>Search Results</title>
 </head>
 <body>
-<div th:replace="fragments :: navigation"></div>
-<div class="container">
-    <div class="bg-light p-4 rounded m-2">
-        <h1 class="display-4">Search Results</h1>
-        <form th:action="@{/search}" method="post">
-            <label for="searchText">Search:</label>
-            <input type="text" id="searchText" name="searchText" required>
-            <button type="submit">Search</button>
-        </form>
-        <div th:if="${searchResults == null or searchResults.isEmpty()}">
-            <p>No search results found.</p>
-        </div>
-
-        <div th:if="${searchResults != null and not searchResults.isEmpty()}">
-            <div class="row justify-content-center">
-                <div class="col-auto" th:each="result: ${searchResults}">
-                    <div class="card" style="width: 18rem; height: 34rem;">
-                        <img th:if="${result.imageUrl != null}" th:src="${result.imageUrl}" class="card-img-top" src="">
-                        <div class="card-body">
-                            <h5 class="card-title" th:text="${result.headline.main}">title</h5>
-                            <p class="card-text" th:text="${result.abstract}">summary</p>
-                            <a th:href="${result.web_url}" class="btn btn-primary">Read More..</a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-<div th:replace="fragments :: footer"></div>
+<h1>Search Results</h1>
+<table>
+    <thead>
+    <tr>
+        <th>Title</th>
+        <th>Published Date</th>
+        <th>Image</th>
+        <th>URL</th>
+    </tr>
+    </thead>
+    <tbody>
+    <!-- Loop through the search results and display them in a table -->
+    <tr th:each="result : ${searchResults}">
+        <td th:text="${result.getHeadline().getMain()}"></td>
+        <td th:text="${result.getPub_date()}"></td>
+        <td><img th:src="${result.getImageUrl()}" alt="Article Image" style="width: 100px;"></td>
+        <td><a th:href="${result.getWeb_url()}" target="_blank">Read More</a></td>
+    </tr>
+    </tbody>
+</table>
 </body>
 </html>
+
+
+

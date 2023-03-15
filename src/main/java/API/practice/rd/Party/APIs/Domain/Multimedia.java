@@ -1,10 +1,8 @@
 package API.practice.rd.Party.APIs.Domain;
 
-
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-
 
 @Getter
 @Setter
@@ -18,6 +16,7 @@ private String Type;
     private String credit;
     private String image;
     private String url;
+
 
 
 

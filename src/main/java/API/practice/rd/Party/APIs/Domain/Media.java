@@ -21,8 +21,8 @@ public class Media {
     @JsonProperty("media-metadata")
     private List<Thumbnail> mediaMetadata;
 
-    private List<Multimedia> multimedia;
 
+    public List<Multimedia> multimedia;
 
-    }
+}
 

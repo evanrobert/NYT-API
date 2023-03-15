@@ -19,5 +19,9 @@ public class Doc {
     private String lead_paragraph;
     private String source;
     private String imageUrl;
-    private List<Media> media;
-}
+
+    public List<Media> media;
+
+
+    }
+

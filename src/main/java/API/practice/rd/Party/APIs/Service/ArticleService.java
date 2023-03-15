@@ -13,11 +13,15 @@ import java.util.List;
 @Service
 public class ArticleService {
 
-    @Value("${api_key}")
+    @Value("${apikey}")
     private String apikey;
+
 
     @Value("${mostPopularUrl}")
     private String mostPopularUrl;
+
+    @Value("${search}")
+    private String search;
 
     @Autowired
     RestTemplate restTemplate;
@@ -43,10 +47,14 @@ public class ArticleService {
     }
 
     public List<Doc> getSearchResults(String searchText) {
-        String url = mostPopularUrl + "q=" + searchText + "&api-key=" + apikey;
-        ResponseEntity<NytSearchResponse> searchResponse = restTemplate.getForEntity(url, NytSearchResponse.class);
-        NytSearchResponse searchResponseBody = searchResponse.getBody();
+        String searchUrl = search + "q=" + searchText + "&api-key=" + apikey;
+        String mostSearchedUrl = "https://api.nytimes.com/svc/search/v2/articlesearch.json?api-key=" + apikey + "&sort=popular";
         List<Doc> docs = new ArrayList<>();
+
+        // Get search results
+        ResponseEntity<NytSearchResponse> searchResponse = restTemplate.getForEntity(searchUrl, NytSearchResponse.class);
+        NytSearchResponse searchResponseBody = searchResponse.getBody();
+
         if (searchResponseBody != null && searchResponseBody.getStatus().equals("OK")) {
             docs = searchResponseBody.getDocs();
             for (Doc doc : docs) {
@@ -63,13 +71,32 @@ public class ArticleService {
                 }
             }
         }
+
+        // Get most searched articles
+        ResponseEntity<NytSearchResponse> mostSearchedResponse = restTemplate.getForEntity(mostSearchedUrl, NytSearchResponse.class);
+        NytSearchResponse mostSearchedResponseBody = mostSearchedResponse.getBody();
+
+        if (mostSearchedResponseBody != null && mostSearchedResponseBody.getStatus().equals("OK")) {
+            List<Doc> mostSearchedDocs = mostSearchedResponseBody.getDocs();
+            docs.addAll(mostSearchedDocs);
+            for (Doc doc : mostSearchedDocs) {
+                List<Media> mediaList = doc.getMedia();
+                for (Media media : mediaList) {
+                    List<Multimedia> multimediaList = media.getMultimedia();
+                    for (Multimedia multimedia : multimediaList) {
+                        if (multimedia.getSubType().equals("largeHorizontal375")) {
+                            String imageUrl = "https://www.nytimes.com/" + multimedia.getUrl();
+                            doc.setImageUrl(imageUrl);
+                            doc.setWeb_url(doc.getWeb_url());
+                        }
+                    }
+                }
+            }
+        }
+
         return docs;
     }
 }
-
-
-
-
 
 
 
